@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package org.jdevtools.jcombinations;
+package io.github.ilnurnasybullin.math.combinations.test;
 
+import io.github.ilnurnasybullin.math.combinations.Combination;
+import io.github.ilnurnasybullin.math.combinations.ICombination;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -39,9 +41,9 @@ public class CombinationIteratorTest {
             "_fourDataSet",
             "_fiveDataSet"
     })
-    public <T> void unorderedCombinationTest_Success(Set<T> elements, Class<T> elementType, int k,
+    public <T> void unorderedCombinationTest_Success(Set<T> elements, int k,
                                                      Set<Set<T>> expectedCombinations) {
-        for (Set<T> combinations: getUnorderedCombination(elements, elementType, k)) {
+        for (Set<T> combinations: getUnorderedCombination(elements, k)) {
             Assertions.assertTrue(expectedCombinations.remove(combinations));
         }
 
@@ -60,15 +62,15 @@ public class CombinationIteratorTest {
         Assertions.assertThrows(expectedException, iterator::next);
     }
 
-    private <T> ICombination<T> getUnorderedCombination(Set<T> elements, Class<T> elementType, int k) {
-        return Combination.unordered(elements, elementType, k);
+    private <T> ICombination<T> getUnorderedCombination(Set<T> elements, int k) {
+        return Combination.unordered(elements, k);
     }
 
     public static Stream<Arguments> _combinationIteratorNext_Exception() {
         Class<NoSuchElementException> expectedException = NoSuchElementException.class;
 
-        Supplier<ICombination<Integer>> construct_1 = () -> Combination.unordered(Set.of(), Integer.class, 0);
-        Supplier<ICombination<String>> construct_2 = () -> Combination.unordered(Set.of("1", "2"), String.class, 1);
+        Supplier<ICombination<Integer>> construct_1 = () -> Combination.unordered(Set.of(), 0);
+        Supplier<ICombination<String>> construct_2 = () -> Combination.unordered(Set.of("1", "2"), 1);
 
         return Stream.of(
                 Arguments.of(construct_1, expectedException),
@@ -85,31 +87,28 @@ public class CombinationIteratorTest {
 
     public static Stream<Arguments> _emptyDataSet() {
         Set<Object> elements = Collections.emptySet();
-        Class<Object> elementType = Object.class;
         int k = 0;
 
         Set<Set<Object>> expectedCombinations = setOf(Collections.emptySet());
         return Stream.of(Arguments.of(
-                elements, elementType, k, expectedCombinations
+                elements, k, expectedCombinations
         ));
     }
 
     public static Stream<Arguments> _singleDataSet() {
         Set<String> elements = Set.of("some");
-        Class<String> elementType = String.class;
 
         Set<Set<String>> expectedCombinations_0 = setOf(Collections.emptySet());
         Set<Set<String>> expectedCombinations_1 = setOf(Set.of("some"));
 
         return Stream.of(
-                Arguments.of(elements, elementType, 0, expectedCombinations_0),
-                Arguments.of(elements, elementType, 1, expectedCombinations_1)
+                Arguments.of(elements, 0, expectedCombinations_0),
+                Arguments.of(elements, 1, expectedCombinations_1)
         );
     }
 
     public static Stream<Arguments> _twoDataSet() {
         Set<Double> elements = Set.of(1.2d, -3.4d);
-        Class<Double> elementType = Double.class;
 
         Set<Set<Double>> expectedCombinations_0 = setOf(Collections.emptySet());
         Set<Set<Double>> expectedCombinations_1 = setOf(
@@ -121,15 +120,14 @@ public class CombinationIteratorTest {
         );
 
         return Stream.of(
-                Arguments.of(elements, elementType, 0, expectedCombinations_0),
-                Arguments.of(elements, elementType, 1, expectedCombinations_1),
-                Arguments.of(elements, elementType, 2, expectedCombinations_2)
+                Arguments.of(elements, 0, expectedCombinations_0),
+                Arguments.of(elements, 1, expectedCombinations_1),
+                Arguments.of(elements, 2, expectedCombinations_2)
         );
     }
 
     public static Stream<Arguments> _threeDataSet() {
         Set<Integer> elements = Set.of(1, 2, 3);
-        Class<Integer> elementType = Integer.class;
 
         Set<Set<Integer>> expectedCombinations_0 = setOf(Collections.emptySet());
         Set<Set<Integer>> expectedCombinations_1 = setOf(
@@ -143,16 +141,15 @@ public class CombinationIteratorTest {
         );
 
         return Stream.of(
-                Arguments.of(elements, elementType, 0, expectedCombinations_0),
-                Arguments.of(elements, elementType, 1, expectedCombinations_1),
-                Arguments.of(elements, elementType, 2, expectedCombinations_2),
-                Arguments.of(elements, elementType, 3, expectedCombinations_3)
+                Arguments.of(elements, 0, expectedCombinations_0),
+                Arguments.of(elements, 1, expectedCombinations_1),
+                Arguments.of(elements, 2, expectedCombinations_2),
+                Arguments.of(elements, 3, expectedCombinations_3)
         );
     }
 
     public static Stream<Arguments> _fourDataSet() {
         Set<Integer> elements = Set.of(1, 2, 3, 4);
-        Class<Integer> elementType = Integer.class;
 
         Set<Set<Integer>> expectedCombinations_0 = setOf(Collections.emptySet());
         Set<Set<Integer>> expectedCombinations_1 = setOf(
@@ -173,17 +170,16 @@ public class CombinationIteratorTest {
         );
 
         return Stream.of(
-                Arguments.of(elements, elementType, 0, expectedCombinations_0),
-                Arguments.of(elements, elementType, 1, expectedCombinations_1),
-                Arguments.of(elements, elementType, 2, expectedCombinations_2),
-                Arguments.of(elements, elementType, 3, expectedCombinations_3),
-                Arguments.of(elements, elementType, 4, expectedCombinations_4)
+                Arguments.of(elements, 0, expectedCombinations_0),
+                Arguments.of(elements, 1, expectedCombinations_1),
+                Arguments.of(elements, 2, expectedCombinations_2),
+                Arguments.of(elements, 3, expectedCombinations_3),
+                Arguments.of(elements, 4, expectedCombinations_4)
         );
     }
 
     public static Stream<Arguments> _fiveDataSet() {
         Set<Integer> elements = Set.of(1, 2, 3, 4, 5);
-        Class<Integer> elementType = Integer.class;
 
         Set<Set<Integer>> expectedCombinations_0 = setOf(Collections.emptySet());
         Set<Set<Integer>> expectedCombinations_1 = setOf(
@@ -210,12 +206,12 @@ public class CombinationIteratorTest {
         );
 
         return Stream.of(
-                Arguments.of(elements, elementType, 0, expectedCombinations_0),
-                Arguments.of(elements, elementType, 1, expectedCombinations_1),
-                Arguments.of(elements, elementType, 2, expectedCombinations_2),
-                Arguments.of(elements, elementType, 3, expectedCombinations_3),
-                Arguments.of(elements, elementType, 4, expectedCombinations_4),
-                Arguments.of(elements, elementType, 5, expectedCombinations_5)
+                Arguments.of(elements, 0, expectedCombinations_0),
+                Arguments.of(elements, 1, expectedCombinations_1),
+                Arguments.of(elements, 2, expectedCombinations_2),
+                Arguments.of(elements, 3, expectedCombinations_3),
+                Arguments.of(elements, 4, expectedCombinations_4),
+                Arguments.of(elements, 5, expectedCombinations_5)
         );
     }
 

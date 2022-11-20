@@ -222,16 +222,14 @@ public class Combination<T> implements ICombination<T>, Iterable<Set<T>> {
     /**
      * Static constructor of {@link Combination}. As an iterator, will be used unordered {@link ChaseSequenceIterator}.
      * @param elements - set of elements for combinatorial set
-     * @param elementType - class type of set's element
      * @param k - combinatorial set's length
      * @param <T> - type of set's element
      * @return {@link Combination} with unordered iterator
-     * @throws NullPointerException if elements or elementType is null
+     * @throws NullPointerException if elements is null
      * @throws IllegalArgumentException if elements' size &lt; k or k &lt; 0
-     * @throws ArrayStoreException if elements' type is not casting with elementType
      * @implNote array from elements copied with method {@link Set#toArray(Object[])}
      */
-    public static <T> Combination<T> unordered(Set<T> elements, Class<T> elementType, int k) {
+    public static <T> Combination<T> unordered(Set<T> elements, int k) {
         checkLength(elements, k);
         return new Combination<>(List.copyOf(elements), null, k);
     }

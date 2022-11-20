@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-module io.github.ilnurnasybullin.jcombination {
+module io.github.ilnurnasybullin.math.combinations {
     exports io.github.ilnurnasybullin.math.combinations;
 }
