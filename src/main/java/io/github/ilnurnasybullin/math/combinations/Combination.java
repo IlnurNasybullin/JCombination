@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-package org.jdevtools.jcombinations;
-
-import org.jdevtools.factorial.Factorials;
+package io.github.ilnurnasybullin.math.combinations;
 
 import java.lang.reflect.Array;
-import java.math.BigInteger;
 import java.util.*;
 
 /**
@@ -45,7 +42,7 @@ public class Combination<T> implements ICombination<T>, Iterable<Set<T>> {
         /**
          * Elements of a combinatorial set
          */
-        private final T[] elements;
+        private final List<T> elements;
 
         /**
          * Combinatorial set's length
@@ -62,12 +59,12 @@ public class Combination<T> implements ICombination<T>, Iterable<Set<T>> {
          */
         private int j = -1;
 
-        private ChaseSequenceIterator(T[] elements, int k) {
+        private ChaseSequenceIterator(List<T> elements, int k) {
             this.elements = elements;
             this.k = k;
-            a = firstIterCombination(elements.length, k);
-            w = initW(elements.length);
-            r = initR(elements.length, k);
+            a = firstIterCombination(elements.size(), k);
+            w = initW(elements.size());
+            r = initR(elements.size(), k);
         }
 
         private int initR(int n, int k) {
@@ -93,7 +90,7 @@ public class Combination<T> implements ICombination<T>, Iterable<Set<T>> {
          */
         @Override
         public boolean hasNext() {
-            return j != elements.length;
+            return j != elements.size();
         }
 
         /**
@@ -114,7 +111,7 @@ public class Combination<T> implements ICombination<T>, Iterable<Set<T>> {
 
         private void searchAndBranching() {
             j = r;
-            while (!w.get(j) && j < elements.length) {
+            while (!w.get(j) && j < elements.size()) {
                 w.set(j);
                 j++;
             }
@@ -189,9 +186,9 @@ public class Combination<T> implements ICombination<T>, Iterable<Set<T>> {
 
         private Set<T> combination() {
             Set<T> combination = new HashSet<>(k);
-            for (int i = 0; i < elements.length; i++) {
+            for (int i = 0; i < elements.size(); i++) {
                 if (a.get(i)) {
-                    combination.add(elements[i]);
+                    combination.add(elements.get(i));
                 }
             }
 
@@ -202,7 +199,7 @@ public class Combination<T> implements ICombination<T>, Iterable<Set<T>> {
     /**
      * Elements of a combinatorial set
      */
-    private final T[] elements;
+    private final List<T> elements;
 
     /**
      * Comparator of {@link #elements}.
@@ -216,7 +213,7 @@ public class Combination<T> implements ICombination<T>, Iterable<Set<T>> {
      */
     private final int k;
 
-    private Combination(T[] elements, Comparator<? super T> comparator, int k) {
+    private Combination(List<T> elements, Comparator<? super T> comparator, int k) {
         this.elements = elements;
         this.comparator = comparator;
         this.k = k;
@@ -236,8 +233,7 @@ public class Combination<T> implements ICombination<T>, Iterable<Set<T>> {
      */
     public static <T> Combination<T> unordered(Set<T> elements, Class<T> elementType, int k) {
         checkLength(elements, k);
-        T[] array = getArray(elements, elementType);
-        return new Combination<>(array, null, k);
+        return new Combination<>(List.copyOf(elements), null, k);
     }
 
     private static <T> T[] getArray(Collection<T> elements, Class<T> elementType) {
@@ -260,28 +256,6 @@ public class Combination<T> implements ICombination<T>, Iterable<Set<T>> {
         if (k < 0) {
             throw new IllegalArgumentException("k must be non negative number!");
         }
-    }
-
-    /**
-     * Return size of all combinations of n by k as a long type. If size more than {@link Long#MAX_VALUE} returning empty
-     * {@link Optional#empty() empty Optional value}.
-     * @return size of all combinations of n by k as a long type.
-     * @implSpec for calculating longSize is called {@link #size()}
-     */
-    @Override
-    public Optional<Long> longSize() {
-        BigInteger size = size();
-        return size.bitLength() <= 63 ? Optional.of(size.longValue()) : Optional.empty();
-    }
-
-    /**
-     * Return size of all combinations of n by k as a {@link BigInteger} type.
-     * @return size of all combinations of n by k as a {@link BigInteger} type.
-     * @implSpec for calculating combinations of n by k is used {@link Factorials#combinations(int, int)}
-     */
-    @Override
-    public BigInteger size() {
-        return Factorials.combinations(elements.length, k);
     }
 
     /**

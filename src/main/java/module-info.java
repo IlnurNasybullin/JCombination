@@ -15,6 +15,5 @@
  */
 
 module io.github.ilnurnasybullin.jcombination {
-    exports org.jdevtools.jcombinations;
-    requires io.github.ilnurnasybullin.jfactorial;
+    exports io.github.ilnurnasybullin.math.combinations;
 }

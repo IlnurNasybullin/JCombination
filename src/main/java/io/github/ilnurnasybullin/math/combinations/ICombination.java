@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package org.jdevtools.jcombinations;
+package io.github.ilnurnasybullin.math.combinations;
 
-import java.math.BigInteger;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -25,18 +23,4 @@ import java.util.Set;
  * @param <T> - type of set's element
  */
 public interface ICombination<T> extends Iterable<Set<T>> {
-
-    /**
-     * Return size of all combinations of n by k as a long type. If size more than {@link Long#MAX_VALUE} returning empty
-     * {@link Optional#empty() empty Optional value}.
-     * @return size of all combinations of n by k as a long type.
-     */
-    Optional<Long> longSize();
-
-    /**
-     * Return size of all combinations of n by k as a {@link BigInteger} type.
-     * @return size of all combinations of n by k as a {@link BigInteger} type.
-     */
-    BigInteger size();
-
 }
